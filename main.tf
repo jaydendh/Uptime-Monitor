@@ -67,7 +67,7 @@ resource "azurerm_linux_function_app" "main" {
 
 resource "azurerm_monitor_action_group" "downtime_alerts" {
   name                = "ag-uptime-${var.yourname}"
-  resource_group_name = azurerm_resource_group.main.name
+  resource_group_name = azurerm_resource_group.rg.name
   short_name          = "uptime"
  
   email_receiver {
@@ -83,7 +83,7 @@ resource "azurerm_monitor_action_group" "downtime_alerts" {
   }
 }
 
-resource "azurerm_monitor_scheduked_query_rules_alert_v2" "site_down" {
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "site_down" {
     name = "alert-site-down-${var.yourname}"
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
@@ -94,7 +94,7 @@ resource "azurerm_monitor_scheduked_query_rules_alert_v2" "site_down" {
     scopes = [azurerm_log_analytics_workspace.main.id]
     evaluation_frequency = "PT5M"
     window_duration = "PT5M"
-    auto_mitigate = true
+    auto_mitigation_enabled = true
 
     criteria {
         query = <<QUERY
@@ -111,7 +111,7 @@ resource "azurerm_monitor_scheduked_query_rules_alert_v2" "site_down" {
     }
 
     action {
-        action_group_id = azurerm_monitor_action_group.downtime_alerts.id
+        action_groups = [azurerm_monitor_action_group.downtime_alerts.id]
     }
 
 }
