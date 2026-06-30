@@ -1,5 +1,0 @@
-yourname    = "jayden"
-location    = "centralus"
-target_url  = "https://example.com"
-alert_email = "jayden.d.h04@gmail.com"
-alert_phone = "+14056933884"
